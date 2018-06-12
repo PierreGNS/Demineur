@@ -1,2 +1,1 @@
-# Demineur
-un démineur en javascript
+# Minesweeper
