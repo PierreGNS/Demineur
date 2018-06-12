@@ -17,11 +17,11 @@
     </head>
     <body>
         <div id="minesweeper">
-            <table id="minesweeper">
+            <table>
                 <?php for($i=0; $i<8; $i++){ ?>
                     <tr>
                         <?php for($j=0; $j<8; $j++){ $x=$i+1; $y=$j+1;?>
-                            <td id="<?php echo "$x$y"; ?>"class="mine arrondie hidenCase"></td>
+                            <td id="<?php echo "$x$y"; ?>"class="arrondie hidenCase"></td>
                         <?php } ?>
                     </tr>
                 <?php } ?>
@@ -29,12 +29,12 @@
         </div>
 
         <div id="menu">
-            <button id="new">Nouvelle partie</button>
-            <button id="restart">Recommencer</button>
-            <button id="rep">Solution</button>
+            <button id="new">Nouvelle partie</button><br/>
+            <button id="restart">Recommencer</button><br/>
+            <div id="bouton"><button id="rep">Solution - OFF</button></div>
         </div>
         <div id="solution">
-            <table>
+            <table id="tableSolution" class="elementHide">
                 <?php for($i=0; $i<8; $i++){ ?>
                     <tr>
                         <?php for($j=0; $j<8; $j++){ $x=$i+1; $y=$j+1;?>
@@ -44,8 +44,6 @@
                 <?php } ?>
             </table>
         </div>
-        &#9675;
-        &#9675;eeffe
-        &#9675;
+
     </body>
 </html>

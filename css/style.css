@@ -1,9 +1,10 @@
 body{
     background-color: #F2F2F2;
+    vertical-align: top;
 }
 #minesweeper, #menu, #solution{
     display: inline-block;
-    vertical-align: top;
+    /*vertical-align: top;*/
 }
 #minesweeper, #solution{
     margin-left: 100px;
@@ -11,6 +12,8 @@ body{
 }
 #menu{
     margin-top: 30px;
+    height: 418px;
+    vertical-align: bottom;
 }
 td {
     width: 50px;            !important;
@@ -35,4 +38,17 @@ td {
 }
 .visibleCase{
     background-color: #D8D8D8;
+}
+.elementHide{
+    display: none;          !important;
+}
+#new, #restart, #rep{
+    height: 60px;
+    width: 150px;
+}
+#rep{
+    margin-bottom: 0px;
+}
+.mine{
+    font-weight:bold;
 }

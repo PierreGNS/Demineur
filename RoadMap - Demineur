@@ -1,0 +1,19 @@
+================= ROADMAP Demineur ==================
+12/06/18 - Effacé par megarde, no copie ....
+	- Ajout victoire
+	- nouvelle partie
+	- recommencer
+	- affichage de la solution
+	- partie commence sur une case vide
+	- ajout de la roadmap au projet en attendant le projet RoadMap
+===== 12/06/18
+- CSS
+- Panel victoire
+- Enregistrement de score
+- visualisation du meilleurs temps
+- utiliser materialize?
+- simplifier le code
+- utiliser des variable globale pour les tableau
+- commenter les fonction
+- uniformiser le code (if etc)
+-supprimer les fichier et dossier inutilisé

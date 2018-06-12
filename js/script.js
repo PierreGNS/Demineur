@@ -1,3 +1,5 @@
+var compteur = 0;
+var perdu = 0;
 function Position(x,y){
 	this.x = x;
 	this.y = y;
@@ -37,7 +39,20 @@ function addNumber(mine, x, y){
 		}
 	}
 }
-function addMine(mine){
+function addMine(posX, posY, mine, view){
+	// On ajoute 1 aux cellule adjacente a xy afin de ne pas poser de mine sur ces case (le premier coup ne peut pas être une mine)
+	posX--;
+	posY--;
+	for(var i=-1;i<2;i++){
+		for(var j=-1;j<2;j++){
+			var a = i+posX;
+			var b = j+posY;
+			if((a>=0)&&(a<8)&&(b>=0)&&(b<8)){
+				view[a][b] = 1;
+			}
+		}
+	}
+	console.log(view);
 	var i = 1;
 	var encore;
 	while (i <= 8){
@@ -45,7 +60,7 @@ function addMine(mine){
 		while(encore == 'true'){
 			var x = getRandomInt(8);
 			var y = getRandomInt(8);
-			if(mine[x][y] == '0'){
+			if((mine[x][y] == '0')&&(view[x][y] == 0)){
 				mine[x][y] = 'x';
 				addNumber(mine,x,y);
 				encore = 'false';
@@ -84,6 +99,7 @@ function showMine(mine){
 //  	 y : position y de la case à afficher sur le tableau mine ou view
 //    mine : Tableau de position des mines
 function showPosition(x, y, mine){
+	compteur++;
 	var a = x+1;
 	var b = y+1;
 	$("#"+a+b).removeClass('hidenCase').addClass('visibleCase');
@@ -106,6 +122,7 @@ function deminage(x, y, mine, view){
 	if(mine[pos.x][pos.y] == 'x'){
 		$("#"+x+y).addClass('red');
 		showMine(mine);
+		perdu = 1;
 	}
 	
 	if(mine[pos.x][pos.y] == '0'){
@@ -140,51 +157,65 @@ function deminage(x, y, mine, view){
 $(function(){
 	var mine = new Array();
 	var view = new Array();
+	var restart = 0;
 	view = initView();
 	mine = initMinesWeeepers();
-	addMine(mine);
-	displayTable(mine);
 
 	$('td').click(function(event){
-		var boxClicked = $(this).text();
-		var position = $(this).attr('id');
-		var x = position.substr(0,1);
-		var y = position.substr(1,2);
+		if ((compteur <= 55) && (perdu == 0)){
+			// récupération de la position cliqué
+			var position = $(this).attr('id');
+			var x = parseInt(position.substr(0,1));
+			var y = parseInt(position.substr(1,2));
+			// si debut de partie
+			if ((compteur == 0) && (restart == 0)){
+				mine = addMine(x, y, mine, view);
+				view = initView();
+			}
 
-		if (view[x-1][y-1] == 0){
-			view = deminage(x, y, mine, view);
+			var boxClicked = $(this).text();
+
+			if (view[x-1][y-1] == 0){
+				view = deminage(x, y, mine, view);
+			}
+			if (compteur == 56){
+				showMine(mine);
+				alert('Bravo ! ');
+			}
 		}
 	});
 	$('#restart').click( function(){
 		view = initView();
 		$('#minesweeper td').text(' ');
-		$('#minesweeper td').removeClass('visibleCase', 'red').addClass('hidenCase');
+		$('#minesweeper td').removeClass('visibleCase red').addClass('hidenCase');
+		$('#rep').text('Solution - OFF');
+		$('#tableSolution').addClass('elementHide');
+		compteur = 0;
+		perdu = 0;
+		restart = 1;
 	});
 	$('#new').click( function(){
 		view = initView();
 		mine = initMinesWeeepers();
-		addMine(mine);
 		$('#minesweeper td').text(' ');
-		$('#minesweeper td').removeClass('visibleCase', 'red').addClass('hidenCase');
-		displayTable(mine);
+		$('#minesweeper td').removeClass('visibleCase red').addClass('hidenCase');
+		$('#rep').text('Solution - OFF');
+		$('#tableSolution').addClass('elementHide');
+		compteur = 0;
+		perdu = 0;
+		restart = 0;
 	});
 	$('#rep').click( function(){
-		displayTable(mine);
+		if(compteur != 0){
+			var etatSolution = $('#rep').text();
+			if (etatSolution == 'Solution - OFF'){
+				$('#rep').text('Solution - ON');
+				$('#tableSolution').removeClass('elementHide');
+			} else {
+				$('#rep').text('Solution - OFF');
+				$('#tableSolution').addClass('elementHide');
+			}
+			displayTable(mine);
+		}
 	});
 })
-
-// OK - le demineur est affiché au millieux de lécran 'css'
-// OK - Cacher toute les case du jeux
-// OK - si on clique sur une mine, toute les mines sont affichés et la partie est perdu
-// OK - codage du boutons recommencer 
-// OK - codage du boutons nouvelle partie
-// compteur de case qui, une fois arrivé a 8, dit victoire (les 8 derniere case sont les mines)
-// Amélioration des boutons recommencer et nouvelle partie css
-// ajout d'un panneau victoire ou defaite avec temps et nbr de mine restante
-
-
-// implémenter un compteur en debut de partie
-// lors d'un debut de partie
-//	- la partie commence sur une case vide
-//	- le minier est définit par la case de commencement
-// trouver un moyen pour le clique droits
